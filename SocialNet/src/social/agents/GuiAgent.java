@@ -1,5 +1,8 @@
 package social.agents;
 
+import javax.swing.JFrame;
+
+import gui.GUIFrame;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -67,7 +70,9 @@ public class GuiAgent extends Agent {
 	}
 	
 	public void init(){
-		//TODO
+		GUIFrame frame = new GUIFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 	}
 
 	public void changePeopleIdea(String peopleId, String ideaId) {
