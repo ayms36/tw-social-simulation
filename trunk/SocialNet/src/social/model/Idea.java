@@ -1,6 +1,5 @@
 package social.model;
 
-import java.util.List;
 
 public class Idea {
 	String name;
