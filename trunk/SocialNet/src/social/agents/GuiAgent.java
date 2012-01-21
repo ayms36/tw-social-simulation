@@ -40,7 +40,7 @@ public class GuiAgent extends Agent {
 
 				if (msg.getOntology() == addPerson) {
 					String[] data = msg.getContent().split(":");
-					addPeople(data[0], data[1]);
+					addPeople(data[0], data[1], new Integer(data[2]), new Integer(data[3]));
 					return;
 				}
 
@@ -82,7 +82,7 @@ public class GuiAgent extends Agent {
 		//TODO
 	}
 	
-	public void addPeople(String id, String ideaID){
+	public void addPeople(String id, String ideaID, int latitiude, int logitiude){
 		//TODO
 	}
 	
