@@ -3,18 +3,16 @@ package gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import social.model.StaticValues;
-
 public class PersonGUI {
 	private String name;
-	private String idea;
+	private IdeaGUI idea;
 	private int latitude;
 	private int longitude;
 	private List<PersonGUI> friends;
 
 	public PersonGUI(String name, String idea, int latitude, int longitude) {
 		this.name = name;
-		this.idea = idea;
+		this.idea = new IdeaGUI(idea);
 		this.latitude = latitude;
 		this.longitude = longitude;
 		friends = new ArrayList<PersonGUI>();
@@ -23,7 +21,7 @@ public class PersonGUI {
 	public String toString() {
 		String begin = "Name: " + name + "\nIdea: " + idea + "\nLatitude: "
 				+ latitude + "\nLongitude: " + longitude;
-		String friendsString = "";
+		String friendsString = "\nFriends: ";
 		for (PersonGUI p : friends) {
 			friendsString = friendsString + p.name + " ";
 		}
@@ -31,7 +29,31 @@ public class PersonGUI {
 	}
 
 	public void removeFriend(String personID) {
-		friends.remove(personID);
+		int index = -1;
+		for (int i = 0; i < friends.size(); i++) {
+			if (personID.equals(friends.get(i).getName())) {
+				index = i;
+			}
+		}
+		friends.remove(index);
+		
+
+	}
+
+	public int getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(int latitude) {
+		this.latitude = latitude;
+	}
+
+	public int getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(int longitude) {
+		this.longitude = longitude;
 	}
 
 	public void addFriend(PersonGUI p) {
@@ -48,11 +70,11 @@ public class PersonGUI {
 		this.name = name;
 	}
 
-	public String getIdea() {
+	public IdeaGUI getIdea() {
 		return idea;
 	}
 
-	public void setIdea(String idea) {
+	public void setIdea(IdeaGUI idea) {
 		this.idea = idea;
 	}
 
@@ -63,6 +85,5 @@ public class PersonGUI {
 	public void setFriends(List<PersonGUI> friends) {
 		this.friends = friends;
 	}
-
 
 }
