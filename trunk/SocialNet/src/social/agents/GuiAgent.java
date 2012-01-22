@@ -66,6 +66,8 @@ public class GuiAgent extends Agent {
 
 	}
 
+	public GuiAgent(){}
+	
 	@Override
 	protected void setup() {
 		super.setup();
