@@ -23,6 +23,7 @@ public class LocalAgent extends Agent {
 	Map<String, Person> persons = new HashMap<String, Person>();
 
 	AID dbAddres;
+	AID guiAddress;
 
 	private class AgentBehaviour extends CyclicBehaviour {
 
@@ -56,6 +57,13 @@ public class LocalAgent extends Agent {
 
 							myAgent.send(response);
 							
+							ACLMessage toGui = new ACLMessage(ACLMessage.INFORM);
+							toGui.addReceiver(guiAddress);
+							toGui.setContent(personId+":"+person.getId());
+							toGui.setOntology(GuiAgent.addFirend);
+							send(toGui);
+							
+							
 							System.out.println("Friends Added");
 						}
 					} else {
@@ -75,6 +83,14 @@ public class LocalAgent extends Agent {
 							person.removeFried(data[1]);
 							
 							System.out.println("friends removed!");
+							
+
+							ACLMessage toGui = new ACLMessage(ACLMessage.INFORM);
+							toGui.addReceiver(guiAddress);
+							toGui.setContent(data[1]+":"+person.getId());
+							toGui.setOntology(GuiAgent.removeFriend);
+							send(toGui);
+							
 						} else {
 							System.out.println("no such friend");
 						}
@@ -115,6 +131,14 @@ public class LocalAgent extends Agent {
 						for (FriendInfo info : person.getFriends().values()) {
 							sendStatusChangeMessage(person, info);
 						}
+						
+
+						ACLMessage toGui = new ACLMessage(ACLMessage.INFORM);
+						toGui.addReceiver(guiAddress);
+						toGui.setContent(person.getId()+":"+person.getIdeaId());
+						toGui.setOntology(GuiAgent.changeIdea);
+						send(toGui);
+						
 						System.out.println("Person chage his mind!");
 					}
 					
@@ -130,6 +154,13 @@ public class LocalAgent extends Agent {
 						for (FriendInfo info : person.getFriends().values()) {
 							sendStatusChangeMessage(person, info);
 						}
+						
+						ACLMessage toGui = new ACLMessage(ACLMessage.INFORM);
+						toGui.addReceiver(guiAddress);
+						toGui.setContent(person.getId()+":"+person.getIdeaId());
+						toGui.setOntology(GuiAgent.changeIdea);
+						send(toGui);
+						
 					System.out.println("Person chage his mind!");
 					}
 				}
@@ -146,6 +177,12 @@ public class LocalAgent extends Agent {
 					PersonAddres addres = new PersonAddres(p.getId(), getAID());
 					response.setContentObject(addres);
 					myAgent.send(response);
+					
+					ACLMessage toGui = new ACLMessage(ACLMessage.INFORM);
+					toGui.addReceiver(guiAddress);
+					toGui.setContent(p.getId()+":"+p.getIdeaId()+":"+p.getLatituide()+":"+p.getLogitiude());
+					toGui.setOntology(GuiAgent.addPerson);
+					send(toGui);
 				}
 
 			} catch (Exception e) {
@@ -159,6 +196,8 @@ public class LocalAgent extends Agent {
 		addBehaviour(new AgentBehaviour());
 
 		dbAddres = new AID(PersonDB.PresonDBAID, false);
+		
+		guiAddress = new AID(GuiAgent.GuiAgentName, false);
 	}
 
 	public void sendStatusChangeMessage(Person person, FriendInfo info) {
