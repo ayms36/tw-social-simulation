@@ -68,7 +68,7 @@ public class MediaAgent extends Agent {
 					
 
 					TimeUnit.MILLISECONDS.sleep(sleepTime
-							+ random.nextInt(StaticValues.maxSleepTime));
+							+ random.nextInt(StaticValues.maxSleepTime + StaticValues.minSleepTime));
 
 				}
 			} catch (Exception e) {

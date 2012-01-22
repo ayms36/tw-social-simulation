@@ -31,11 +31,21 @@ public class FateAgent extends Agent {
 	List<String> ideas = new ArrayList<String>();
 
 	Integer maxPerson = 100;
+	
+	AID guiAddress;
+	
+	int maxIdeasSize = 10;
 
 	class FateBehavoir extends CyclicBehaviour {
+		
+		
 
 		@Override
 		public void action() {
+			
+			if(maxIdeasSize > ideas.size()){
+				addIdea(NameGenerator.generateNewIdeaName());
+			}
 
 			int status = random.nextInt(10);
 
@@ -53,8 +63,8 @@ public class FateAgent extends Agent {
 				break;
 			}
 			try {
-				TimeUnit.MICROSECONDS.sleep(random
-						.nextInt(StaticValues.maxSleepTime) + 50);
+				TimeUnit.MILLISECONDS.sleep(random
+						.nextInt(StaticValues.maxSleepTime) + StaticValues.minSleepTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -141,11 +151,24 @@ public class FateAgent extends Agent {
 	public void removeFriendRequest() {
 
 	}
+	
+	public void addIdea(String ideaID){
+		
+		ideas.add(ideaID);
+		ACLMessage toGui = new ACLMessage(ACLMessage.INFORM);
+		toGui.addReceiver(guiAddress);
+		toGui.setContent(ideaID);
+		toGui.setOntology(GuiAgent.addIdea);
+		send(toGui);
+		
+		System.out.println("Idea created");
+	}
 
-	public FateAgent() {
-		ideas.add("Komunizm");
-		ideas.add("Faszyzm");
+	public FateAgent() {		
+		guiAddress = new AID(GuiAgent.GuiAgentName, false);
+		
 
+		
 		AID local = new AID("europa", false);
 		LocalAgentInfo info = new LocalAgentInfo();
 		info.setAid(local);
