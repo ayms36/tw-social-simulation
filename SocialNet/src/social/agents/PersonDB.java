@@ -1,5 +1,8 @@
 package social.agents;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -36,20 +39,21 @@ public class PersonDB extends Agent {
 		@Override
 		public void action() {
 
-			ACLMessage message = myAgent.receive();
+			ACLMessage message = myAgent.blockingReceive();
+			
+			System.out.println("mam:" + message.getOntology() + " "
+					+ message.getSender().getName());
 
+			
 			Object data;
 			try {
-				data = message.getContentObject();
 
-				if (message.getOntology() == addPerson
-						& data instanceof PersonAddres) {
-					addPerson((PersonAddres) data);
-
+				if (message.getOntology().equals(addPerson)) {
+					addPerson((PersonAddres) message.getContentObject());
 					return;
 				}
 
-				if (message.getOntology() == getPersonMaster) {
+				if (message.getOntology().equals(getPersonMaster)) {
 
 					AID manager = getPersonMaster(message.getContent());
 
@@ -64,16 +68,16 @@ public class PersonDB extends Agent {
 					return;
 				}
 
-				if (message.getOntology() == getRandomPersons) {
+				if (message.getOntology().equals(getRandomPersons)) {
 					
-					PersonAddres[] addresses = getRandomPersons(new Integer(message.getContent()));
+					PersonAddres addresse = getRandomPerson();
 					
 				
 					ACLMessage response = new ACLMessage(ACLMessage.INFORM);
 					response.setOntology(getRandomPersons);
 					response.setSender(myAgent.getAID());
 					response.addReceiver(message.getSender());
-					response.setContentObject(addresses);
+					response.setContentObject(addresse);
 					myAgent.send(response);
 					
 					return;
@@ -96,22 +100,21 @@ public class PersonDB extends Agent {
 		return db.get(personID);
 	}
 
-	public PersonAddres[] getRandomPersons(int count) {
-		PersonAddres[] persons = new PersonAddres[count];
+	public PersonAddres getRandomPerson() {
 
+		int toTake = r.nextInt(db.size());
+		
 		int pos = 0;
 
 		for (String personId : db.keySet()) {
-			if (r.nextBoolean()) {
-				persons[pos] = new PersonAddres(personId, db.get(personId));
-				pos++;
-				if (pos >= persons.length) {
-					break;
-				}
+			if (toTake == pos) {
+				return new PersonAddres(personId, db.get(personId));
+	
 			}
+			pos++;
 		}
 
-		return persons;
+		return null;
 	}
 
 	@Override

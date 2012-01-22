@@ -21,8 +21,12 @@ public class GuiAgent extends Agent {
 
 		@Override
 		public void action() {
-			ACLMessage msg = myAgent.receive();
+			ACLMessage msg = myAgent.blockingReceive();
 
+			System.out.println("mam:" + msg.getOntology() + " "
+					+ msg.getSender().getName());
+
+			
 			try {
 				if (msg.getOntology() == changeIdea) {
 					String[] data = msg.getContent().split(":");

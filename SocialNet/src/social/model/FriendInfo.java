@@ -14,10 +14,19 @@ public class FriendInfo implements Serializable{
 	Integer ideaSurence;
 	AID parentAID;
 	Integer infuence;
+	String toId;
 	
-	public FriendInfo() {
-		// TODO Auto-generated constructor stub
+	private FriendInfo(){
+		
 	}
+	
+	public FriendInfo(String to) {
+		toId = to;
+	}
+	
+	public String getToId() {
+		return toId;
+	};
 	
 	public FriendInfo(Person person) {
 
