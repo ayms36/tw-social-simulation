@@ -22,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import social.model.Idea;
 import social.util.NameGenerator;
 
 public class GUIFrame extends JFrame {
@@ -240,7 +239,8 @@ public class GUIFrame extends JFrame {
 					ideas.add(idea);
 					resultLabel.setForeground(Color.green);
 					resultLabel.setText("Idea " + idea + " added");
-					renewIdee();
+					//renewIdee();
+					System.out.println(ideas);
 				}
 				else{
 					resultLabel.setForeground(Color.RED);
@@ -257,8 +257,28 @@ public class GUIFrame extends JFrame {
 		for (Idea idea : ideas) {
 			idee.addItem(idea);
 		}
-		idee.repaint();
+		//idee.repaint();
 
+	}
+	public void removeFriend(String toID, String whoID) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void addFriend(String toID, String whoID) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void changePeopleIdea(String peopleId, String ideaId) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void addPeople(String id, String ideaID, int latitude, int longitude) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void addIdea(String ideaID) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

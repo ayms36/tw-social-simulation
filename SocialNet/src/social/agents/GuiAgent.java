@@ -78,22 +78,22 @@ public class GuiAgent extends Agent {
 	}
 
 	public void changePeopleIdea(String peopleId, String ideaId) {
-		// TODO
+		frame.changePeopleIdea(peopleId,ideaId);
 	}
 
 	public void addFriend(String toID, String whoID){
-		//TODO
+		frame.addFriend(toID, whoID);
 	}
 	
 	public void removeFriend(String toID, String whoID){
-		//TODO
+		frame.removeFriend(toID,whoID);
 	}
 	
 	public void addPeople(String id, String ideaID, int latitude, int longitude){
-		//TODO
+		frame.addPeople(id,ideaID,latitude,longitude);
 	}
 	
 	public void addIdea(String ideaID){
-		//TODO		
+		frame.addIdea(ideaID);
 	}
 }
