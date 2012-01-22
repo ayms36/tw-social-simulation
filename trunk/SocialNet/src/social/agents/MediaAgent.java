@@ -45,15 +45,14 @@ public class MediaAgent extends Agent {
 
 
 			
-			ACLMessage message = myAgent.blockingReceive();
+			ACLMessage message = myAgent.blockingReceive(300);
 
 		
 			
-			System.out.println("mam:" + message.getOntology() + " "
-					+ message.getSender().getName());
-
 			
 			try {
+				System.out.println("mam:" + message.getOntology() + " "
+						+ message.getSender().getName());
 
 
 				if (message.getOntology().equals(PersonDB.getRandomPersons)

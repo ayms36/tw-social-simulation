@@ -106,6 +106,9 @@ public class GuiAgent extends Agent {
 	}
 
 	public void changePeopleIdea(String peopleId, String ideaId) {
+		
+		System.out.println(ideaId + " !!!!!!!!!!!!!!!!!!!");
+		
 		frame.changePeopleIdea(peopleId,ideaId);
 	}
 
