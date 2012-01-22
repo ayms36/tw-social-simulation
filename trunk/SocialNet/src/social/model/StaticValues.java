@@ -1,0 +1,7 @@
+package social.model;
+
+public class StaticValues {
+	public static int maxInfuence = 10;
+	
+	public static int maxSleepTime = 100;
+}

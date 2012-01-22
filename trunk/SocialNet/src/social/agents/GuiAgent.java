@@ -2,6 +2,7 @@ package social.agents;
 
 import javax.swing.JFrame;
 
+
 import gui.GUIFrame;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;

@@ -1,13 +1,13 @@
 package social.agents;
 
-import java.util.concurrent.TimeUnit;
-
-import social.model.Idea;
-import social.model.PersonAddres;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+
+import java.util.concurrent.TimeUnit;
+
+import social.model.PersonAddres;
 
 public class MediaAgent extends Agent {
 
@@ -17,7 +17,7 @@ public class MediaAgent extends Agent {
 
 	int infunece = 10;
 
-	Idea idea = null;
+	String idea = null;
 
 	AID dbAddres;
 	
@@ -26,9 +26,14 @@ public class MediaAgent extends Agent {
 		@Override
 		public void action() {
 
+			ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
+			request.setOntology(PersonDB.getRandomPersons);
+			request.setSender(myAgent.getAID());
+			request.addReceiver(dbAddres);
+			myAgent.send(request);
+			
+			
 			ACLMessage message = myAgent.receive();
-
-
 			
 			try {
 				
@@ -93,16 +98,22 @@ public class MediaAgent extends Agent {
 		this.infunece = infunece;
 	}
 
-	public Idea getIdea() {
+	public String getIdea() {
 		return idea;
 	}
 
-	public void setIdea(Idea idea) {
+	public void setIdea(String idea) {
 		this.idea = idea;
 	}
 
 	public void sendMessageTo(AID agent, String personId) {
-		// TODO
+		ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+		
+		message.addReceiver(agent);
+		message.setContent(personId+":"+idea+":"+infunece);
+		message.setSender(getAID());
+		message.setOntology(LocalAgent.mediaInfuence);
+		send(message);
 	}
 
 }
