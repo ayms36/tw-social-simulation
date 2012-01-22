@@ -2,13 +2,16 @@ package social.model;
 
 import jade.core.AID;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class Person {
+public class Person implements Serializable{
+
+	private static final long serialVersionUID = 7909829490700726808L;
 
 	static Random random = new Random(System.nanoTime());
 

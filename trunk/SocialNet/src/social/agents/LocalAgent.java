@@ -1,10 +1,13 @@
 package social.agents;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import social.model.FriendInfo;
 import social.model.Person;
+import social.model.PersonAddres;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -15,112 +18,134 @@ public class LocalAgent extends Agent {
 	public static String removeFriend = "removeFriend";
 	public static String mediaInfuence = "mediaInfuence";
 	public static String statusChange = "statusChange";
+	public static String addPerson = "addPerson";
 
-	Map<String, Person> persons;
+	Map<String, Person> persons = new HashMap<String, Person>();
+
+	AID dbAddres;
 
 	private class AgentBehaviour extends CyclicBehaviour {
 
 		@Override
 		public void action() {
-			ACLMessage message = myAgent.receive();
+			ACLMessage message = myAgent.blockingReceive();
 
 			try {
-				if (message.getOntology() == addFriend) {
 
-					String personId = message.getContent();
+				System.out.println("mam:" + message.getOntology() + " "
+						+ message.getSender().getName());
 
-					if (persons.containsKey(personId)) {
-						Object data = message.getContentObject();
+				if (message.getOntology().equals(addFriend)) {
 
-						if (data instanceof FriendInfo) {
-							FriendInfo info = (FriendInfo) data;
-							Person person = persons.get(personId);
-							if (person.newFriendRequest(info)) {
-								ACLMessage response = new ACLMessage(
-										ACLMessage.AGREE);
-								response.addReceiver(info.getParentAID());
-								response.setSender(myAgent.getAID());
-								response.setOntology(addFriend);
-								response.setContent(personId);
+					Object data = message.getContentObject();
 
-								FriendInfo newInfo = new FriendInfo(person);
-								response.setContentObject(newInfo);
+					if (data instanceof FriendInfo) {
+						FriendInfo info = (FriendInfo) data;
+						String personId = info.getToId();
+						Person person = persons.get(personId);
+						if (person.newFriendRequest(info)) {
+							ACLMessage response = new ACLMessage(
+									ACLMessage.AGREE);
+							response.addReceiver(info.getParentAID());
+							response.setSender(myAgent.getAID());
+							response.setOntology(addFriend);
+							response.setContent(personId);
 
-								myAgent.send(response);
-							}
-						} else {
-							System.out.println("bad data");
+							FriendInfo newInfo = new FriendInfo(person);
+							response.setContentObject(newInfo);
+
+							myAgent.send(response);
+							
+							System.out.println("Friends Added");
 						}
 					} else {
-						System.out.println("no such agent:" + personId);
+						System.out.println("bad data");
 					}
 					return;
 				}
 
-				if (message.getOntology() == removeFriend) {
-					
-					
-					if(message.getPerformative() == ACLMessage.AGREE){
+				if (message.getOntology().equals(removeFriend)) {
+
+					if (message.getPerformative() == ACLMessage.AGREE) {
 						String[] data = message.getContent().split(":");
-						
+
 						if (persons.containsKey(data[0])) {
 							Person person = persons.get(data[0]);
-							
+
 							person.removeFried(data[1]);
-						}
-						else{
+							
+							System.out.println("friends removed!");
+						} else {
 							System.out.println("no such friend");
 						}
-					}
-					else{
+					} else {
 						String personId = message.getContent();
-						
-						if(persons.containsKey(personId)){
+
+						if (persons.containsKey(personId)) {
 							Person person = persons.get(personId);
 							FriendInfo info = person.removeFriend();
-							
-							if(info != null){
-								ACLMessage replay = new ACLMessage(ACLMessage.AGREE);
-								
+
+							if (info != null) {
+								ACLMessage replay = new ACLMessage(
+										ACLMessage.AGREE);
+
 								replay.addReceiver(info.getParentAID());
 								replay.setSender(myAgent.getAID());
 								replay.setOntology(removeFriend);
-								replay.setContent(info.getId()+":"+personId);
-								
+								replay.setContent(info.getId() + ":" + personId);
+
 								myAgent.send(replay);
+								
+
+								System.out.println("friends removed!");
 							}
 						}
-						
+
 					}
-					
+
 					return;
 				}
-				
-				
-				if(message.getOntology() == mediaInfuence){
-					
+
+				if (message.getOntology().equals(mediaInfuence)) {
+
 					String data[] = message.getContent().split(":");
-					
+
 					Person person = persons.get(data[0]);
-					if(person.recalculateIdea(data[1], new Integer(data[2])) != null){
+					if (person.recalculateIdea(data[1], new Integer(data[2])) != null) {
 						for (FriendInfo info : person.getFriends().values()) {
 							sendStatusChangeMessage(person, info);
 						}
+						System.out.println("Person chage his mind!");
 					}
 					
 					return;
 				}
-				
-				if(message.getOntology() == statusChange){
-					
-					
+
+				if (message.getOntology().equals(statusChange)) {
+
 					String[] data = message.getContent().split(":");
-					Person person  = persons.get(data[0]);
-					if(person.statusChange(data[1], data[2], new Integer(data[3])) != null){
+					Person person = persons.get(data[0]);
+					if (person.statusChange(data[1], data[2], new Integer(
+							data[3])) != null) {
 						for (FriendInfo info : person.getFriends().values()) {
 							sendStatusChangeMessage(person, info);
 						}
+					System.out.println("Person chage his mind!");
 					}
+				}
+
+				if (message.getOntology().equals(addPerson)) {
+
+					Person p = (Person) message.getContentObject();
+					persons.put(p.getId(), p);
+
+					ACLMessage response = new ACLMessage(ACLMessage.INFORM);
+					response.addReceiver(dbAddres);
+					response.setOntology(PersonDB.addPerson);
+
+					PersonAddres addres = new PersonAddres(p.getId(), getAID());
+					response.setContentObject(addres);
+					myAgent.send(response);
 				}
 
 			} catch (Exception e) {
@@ -129,16 +154,22 @@ public class LocalAgent extends Agent {
 		}
 
 	}
-	
-	
-	public void sendStatusChangeMessage(Person person, FriendInfo info){
-		
+
+	public LocalAgent() {
+		addBehaviour(new AgentBehaviour());
+
+		dbAddres = new AID(PersonDB.PresonDBAID, false);
+	}
+
+	public void sendStatusChangeMessage(Person person, FriendInfo info) {
+
 		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 		message.addReceiver(person.getParentAID());
 		message.setSender(getAID());
 		message.setOntology(statusChange);
-		message.setContent(info.getId()+":"+person.getId()+":"+person.getIdeaId()+":"+person.getIdeaSurance());
-		
+		message.setContent(info.getId() + ":" + person.getId() + ":"
+				+ person.getIdeaId() + ":" + person.getIdeaSurance());
+
 		send(message);
 	}
 
