@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+//Singleton
 public class Names {
 	List<String> firstNames = new ArrayList<String>();
 	private static volatile  Names names = null;
