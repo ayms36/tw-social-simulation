@@ -1,9 +1,9 @@
 package gui;
 
-public class Idea {
+public class IdeaGUI {
 	String name;
 	
-	public Idea(String name) {
+	public IdeaGUI(String name) {
 		if(name == null)
 			throw new NullPointerException("name cannot be null");
 		this.name = name;
@@ -14,12 +14,14 @@ public class Idea {
 	
 	@Override
 	public boolean equals(Object a) {
-		if(a != null && a instanceof Idea){
-			return name.equals(((Idea) a).getName());
+		if(a != null && a instanceof IdeaGUI){
+			return name.equals(((IdeaGUI) a).getName());
 		}
 		return false;
 	}
 
+	
+	
 	public String toString(){
 		return name;
 	}

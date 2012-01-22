@@ -33,8 +33,8 @@ public class GUIFrame extends JFrame {
 
 	private static final String title = "Social Net";
 
-	private List<Person> people = new ArrayList<Person>();
-	private List<Idea> ideas = new ArrayList<Idea>();
+	private List<PersonGUI> people = new ArrayList<PersonGUI>();
+	private List<IdeaGUI> ideas = new ArrayList<IdeaGUI>();
 	private JComboBox idee;
 
 
@@ -171,10 +171,10 @@ public class GUIFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (idee.getSelectedItem() != null || nameField.getText() != ""
-						|| latitudeField.getText() != ""
-						|| longitudeField.getText() != "") {
-					Person p = new Person(nameField.getText(), idee
+				if (idee.getSelectedItem() != null && nameField.getText() != ""
+						& latitudeField.getText() != ""
+						& longitudeField.getText() != "") {
+					PersonGUI p = new PersonGUI(nameField.getText(), idee
 							.getSelectedItem().toString(),
 							Integer.parseInt(latitudeField.getText()),
 							Integer.parseInt(longitudeField.getText()));
@@ -235,7 +235,7 @@ public class GUIFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (nameField.getText() != ""){
-					Idea idea = new Idea(nameField.getText());
+					IdeaGUI idea = new IdeaGUI(nameField.getText());
 					ideas.add(idea);
 					resultLabel.setForeground(Color.green);
 					resultLabel.setText("Idea " + idea + " added");
@@ -254,31 +254,49 @@ public class GUIFrame extends JFrame {
 	private void renewIdee(){
 		if(idee!=null)
 			idee.removeAll();
-		for (Idea idea : ideas) {
+		for (IdeaGUI idea : ideas) {
 			idee.addItem(idea);
 		}
 		//idee.repaint();
 
 	}
 	public void removeFriend(String toID, String whoID) {
-		// TODO Auto-generated method stub
+
+		for(int i=0; i<people.size();i++){
+			if (toID.equals(people.get(i).getName())){
+				people.get(i).removeFriend(whoID);
+			}
+
+		}
+			
 		
 	}
 	public void addFriend(String toID, String whoID) {
-		// TODO Auto-generated method stub
+		int index=(Integer) null;
+		int friendIndex = (Integer) null;
+		for(int i=0; i<people.size();i++){
+			if (toID.equals(people.get(i).getName())){
+				index = i;
+			}
+			if (whoID.equals(people.get(i).getName()))
+				friendIndex=i;
+		}
+
+		people.get(index).addFriend(people.get(friendIndex));
+		
 		
 	}
 	public void changePeopleIdea(String peopleId, String ideaId) {
-		// TODO Auto-generated method stub
-		
+		for( PersonGUI p :people ){
+			if(p.getName().equals(peopleId)){
+				p.setIdea(ideaId);			}
+		}
 	}
 	public void addPeople(String id, String ideaID, int latitude, int longitude) {
-		// TODO Auto-generated method stub
-		
+		people.add(new PersonGUI(id,ideaID,latitude,longitude));
 	}
 	public void addIdea(String ideaID) {
-		// TODO Auto-generated method stub
-		
+		ideas.add(new IdeaGUI(ideaID));
 	}
 
 }
