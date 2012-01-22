@@ -170,6 +170,7 @@ public class GUIFrame extends JFrame {
 
 		people.get(index).addFriend(people.get(friendIndex));
 		people.get(friendIndex).addFriend(people.get(index));
+		repaint();
 
 	}
 
@@ -179,14 +180,17 @@ public class GUIFrame extends JFrame {
 				p.setIdea(new IdeaGUI(ideaId));
 			}
 		}
+		repaint();
 	}
 
 	public void addPeople(String id, String ideaID, int latitude, int longitude) {
 		people.add(new PersonGUI(id, ideaID, latitude, longitude));
+		repaint();
 	}
 
 	public void addIdea(String ideaID) {
 		ideas.add(new IdeaGUI(ideaID));
+		repaint();
 	}
 
 }

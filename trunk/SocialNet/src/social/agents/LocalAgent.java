@@ -44,7 +44,8 @@ public class LocalAgent extends Agent {
 						FriendInfo info = (FriendInfo) data;
 						String personId = info.getToId();
 						Person person = persons.get(personId);
-						if (person.newFriendRequest(info)) {
+						System.out.println("person:" + personId);
+						if (person != null && person.newFriendRequest(info)) {
 							ACLMessage response = new ACLMessage(
 									ACLMessage.AGREE);
 							response.addReceiver(info.getParentAID());
