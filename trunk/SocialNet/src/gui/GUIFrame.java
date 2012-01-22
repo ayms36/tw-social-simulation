@@ -60,7 +60,8 @@ public class GUIFrame extends JFrame {
 		this.setTitle(title);
 		this.setLayout(new BorderLayout());
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		this.setSize(toolkit.getScreenSize().width,toolkit.getScreenSize().height-50);
+		this.setSize(toolkit.getScreenSize().width,
+				toolkit.getScreenSize().height - 50);
 		GraphPanel gp = new GraphPanel();
 
 		this.add(gp, BorderLayout.CENTER);
@@ -78,47 +79,51 @@ public class GUIFrame extends JFrame {
 
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			
+
 			Graphics2D g2 = (Graphics2D) g;
 
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			int w = getWidth();
 			int h = getHeight();
-			g2.clearRect(0, 0, w,h);
+			g2.clearRect(0, 0, w, h);
 			double xInc = (double) (w - 2 * PAD) / getLatitudeMax();
 			double scale = (double) (h - 2 * PAD) / getLongitudeMax();
 
 			// Drawing people
 			for (int i = 0; i < people.size(); i++) {
-				double x = transformX(xInc,people.get(i).getLatitude());
-				double y = transformY(scale,people.get(i).getLongitude());
+				double x = transformX(xInc, people.get(i).getLatitude());
+				double y = transformY(scale, people.get(i).getLongitude());
 				g2.setPaint(people.get(i).getIdea().getC());
 				g2.fill(new Ellipse2D.Double(x - 50, y - 16, 100, 32));
 				for (PersonGUI p : people.get(i).getFriends()) {
-					if(indexInPeople(p.getName())>indexInPeople(people.get(i).getName())){
-					Line2D line = new Line2D.Double(x,y,transformX(xInc,p.getLatitude()),transformY(scale,p.getLongitude()));
+					// if(indexInPeople(p.getName())>indexInPeople(people.get(i).getName())){
+					Line2D line = new Line2D.Double(x, y, transformX(xInc,
+							p.getLatitude()), transformY(scale,
+							p.getLongitude()));
 					g2.draw(line);
-				}}
+
+					// }
+				}
 				g2.setPaint(Color.BLACK);
 				g2.drawString(people.get(i).getName(), (int) x - 2, (int) y + 3);
 			}
 
 		}
-		
+
 		private int indexInPeople(String personGUI) {
-				for(int i =0; i<people.size();i++)
-					if(personGUI.equals(people.get(i).getName()))
-						return i;
+			for (int i = 0; i < people.size(); i++)
+				if (personGUI.equals(people.get(i).getName()))
+					return i;
 			return -1;
 		}
 
-		private double transformX(double xInc, double x){
+		private double transformX(double xInc, double x) {
 			return PAD + xInc * x;
 
 		}
-		
-		private double transformY(double scale, double y){
+
+		private double transformY(double scale, double y) {
 			return PAD + scale * y;
 
 		}

@@ -30,7 +30,7 @@ public class FateAgent extends Agent {
 
 	List<String> ideas = new ArrayList<String>();
 
-	Integer maxPerson = 100;
+	Integer maxPerson = 20;
 	
 	AID guiAddress;
 	
@@ -83,7 +83,12 @@ public class FateAgent extends Agent {
 			person.setLatituide(info.getRandomLat());
 			person.setLogitiude(info.getRandomLng());
 			person.setParentAID(info.getAid());
-			person.setId(NameGenerator.generateNewIdeaName());
+			try {
+				person.setId(NameGenerator.generateNewPersonName());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			person.setIdeaId(ideas.get(random.nextInt(ideas.size())));
 			person.setIdeaSurance(StaticValues.startSurance);
 			try {
@@ -112,8 +117,8 @@ public class FateAgent extends Agent {
 			if (persons.size() > 0) {
 
 				Set<String> keys = persons.keySet();
-				int posTo = random.nextInt(keys.size());
-				int posWho = random.nextInt(keys.size());
+				int posTo = random.nextInt(keys.size() - 1);
+				int posWho = random.nextInt(keys.size() - 1);
 
 				String keyTo = null, keyWho = null;
 				int i = 0;
@@ -133,6 +138,8 @@ public class FateAgent extends Agent {
 				info.setIdeaId("");
 				info.setIdeaSurence(0);
 				info.setParentAID(persons.get(keyWho));
+				
+				System.out.println("nfr: " + keyTo + " " + keyWho + " !!!!!!!!");
 
 				ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 				message.setOntology(LocalAgent.addFriend);
