@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class Person implements Serializable{
+import javax.sound.midi.MidiDevice.Info;
+
+public class Person implements Serializable {
 
 	private static final long serialVersionUID = 7909829490700726808L;
 
@@ -22,7 +24,7 @@ public class Person implements Serializable{
 	Integer ideaSurance;
 
 	Integer latituide, logitiude;
-	
+
 	Map<String, FriendInfo> friends = new HashMap<String, FriendInfo>();
 
 	AID parentAID;
@@ -32,16 +34,23 @@ public class Person implements Serializable{
 	}
 
 	public String recalculateIdea(String ideaId, Integer infuance) {
-
+		
 		Map<String, Integer> ideas = new HashMap<String, Integer>();
 
 		ideas.put(ideaId, infuance);
 
 		for (FriendInfo friendInfo : friends.values()) {
-			Integer tmp = ideas.containsKey(friendInfo.getIdeaId()) ? 0 : ideas
-					.get(friendInfo.ideaId);
-			tmp += friendInfo.getIdeaSurence() / friendInfo.getInfuence();
-			ideas.put(friendInfo.getIdeaId(), tmp);
+			if (friendInfo != null) {
+				
+				Integer tmp = 0;
+
+				if(friendInfo.getIdeaId() != null & ideas.containsKey(friendInfo.getIdeaId())){
+					tmp = ideas.get(friendInfo.getIdeaId());
+				}
+				
+				tmp += friendInfo.getIdeaSurence() / friendInfo.getInfuence();
+				ideas.put(friendInfo.getIdeaId(), tmp);
+			}
 		}
 
 		String newIdea = ideaId;
@@ -70,34 +79,32 @@ public class Person implements Serializable{
 	public boolean newFriendRequest(FriendInfo info) {
 
 		if (!friends.containsKey(info.getId()) && random.nextBoolean()) {
-			info.setInfuence(random.nextInt(StaticValues.maxInfuence));
+			info.setInfuence(random.nextInt(StaticValues.maxInfuence + 1));
 			friends.put(info.getId(), info);
 			return true;
 		}
 		return false;
 	}
 
-	
-	public String statusChange(String friendID, String ideaID, int surance){
-		
+	public String statusChange(String friendID, String ideaID, int surance) {
+
 		FriendInfo info = friends.get(friendID);
-		if(info != null){
-			
+		if (info != null) {
+
 			info.setIdeaId(ideaID);
 			info.setIdeaSurence(surance);
 			info.setInfuence(random.nextInt(StaticValues.maxInfuence));
-			
+
 			recalculateIdea();
 		}
-		
-		
+
 		return null;
 	}
-	
-	public void removeFried(String personID){
+
+	public void removeFried(String personID) {
 		friends.remove(personID);
 	}
-	
+
 	public FriendInfo removeFriend() {
 		String toDel = null;
 
@@ -115,8 +122,7 @@ public class Person implements Serializable{
 		}
 		return null;
 	}
-	
-	
+
 	public String getId() {
 		return id;
 	}
@@ -130,6 +136,7 @@ public class Person implements Serializable{
 	}
 
 	public void setIdeaId(String ideaId) {
+
 		this.ideaId = ideaId;
 	}
 
@@ -172,7 +179,5 @@ public class Person implements Serializable{
 	public void setParentAID(AID parentAID) {
 		this.parentAID = parentAID;
 	}
-
-
 
 }
