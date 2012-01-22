@@ -12,10 +12,11 @@ public class GuiAgent extends Agent {
 
 	public static String changeIdea = "chageIdea";
 	public static String addFirend = "addFirend";
-	public static String removeFirend = "removeFirend";
+	public static String removeFriend = "removeFriend";
 	public static String addPerson = "addPerson";
 	public static String addIdea = "addIdea";	
 
+	private GUIFrame frame;
 	private class ListenBehaviour extends CyclicBehaviour {
 
 		@Override
@@ -35,9 +36,9 @@ public class GuiAgent extends Agent {
 					return;
 				}
 				
-				if (msg.getOntology() == removeFirend) {
+				if (msg.getOntology() == removeFriend) {
 					String[] data = msg.getContent().split(":");
-					removeFried(data[0], data[1]);
+					removeFriend(data[0], data[1]);
 					return;
 				}
 				
@@ -71,7 +72,7 @@ public class GuiAgent extends Agent {
 	}
 	
 	public void init(){
-		GUIFrame frame = new GUIFrame();
+		frame = new GUIFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
@@ -84,11 +85,11 @@ public class GuiAgent extends Agent {
 		//TODO
 	}
 	
-	public void removeFried(String toID, String whoID){
+	public void removeFriend(String toID, String whoID){
 		//TODO
 	}
 	
-	public void addPeople(String id, String ideaID, int latitiude, int logitiude){
+	public void addPeople(String id, String ideaID, int latitude, int longitude){
 		//TODO
 	}
 	
