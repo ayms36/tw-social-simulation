@@ -91,9 +91,8 @@ public class GUIFrame extends JFrame {
 					Line2D line = new Line2D.Double(x, y, transformX(xInc,
 							p.getLatitude()-getLatitudeMin()), transformY(scale,
 							p.getLongitude()-getLongitudeMin()));
-					g2.setStroke(new BasicStroke(4));
-				//	g2.draw(line);
-				//	g2.fill(line);
+					g2.setStroke(new BasicStroke(1));
+					g2.setPaint(Color.BLACK);
 					g2.drawLine((int)x, (int)y,(int) transformX(xInc,
 							p.getLatitude()-getLatitudeMin()),(int) transformY(scale,
 							p.getLongitude()-getLongitudeMin()));
@@ -106,9 +105,9 @@ public class GUIFrame extends JFrame {
 				double x = transformX(xInc, people.get(i).getLatitude()-getLatitudeMin());
 				double y = transformY(scale, people.get(i).getLongitude()-getLongitudeMin());
 				g2.setPaint(ideas.get(people.get(i).getIdea()).getC());
-				g2.fill(new Ellipse2D.Double(x - 40, y - 16, 80, 32));
+				g2.fill(new Ellipse2D.Double(x - 10, y - 10, 20, 20));
 				g2.setPaint(Color.BLACK);
-				g2.drawString(people.get(i).getName(), (int) x - 20, (int) y + 3);
+				g2.drawString(people.get(i).getName(), (int) x - 25, (int) y+ 3);
 			}
 
 		}

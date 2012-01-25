@@ -11,6 +11,8 @@ import java.util.Random;
 
 import javax.sound.midi.MidiDevice.Info;
 
+import sun.java2d.Surface;
+
 public class Person implements Serializable {
 
 	private static final long serialVersionUID = 7909829490700726808L;
@@ -21,7 +23,7 @@ public class Person implements Serializable {
 
 	String ideaId;
 
-	Integer ideaSurance;
+	Double ideaSurance;
 
 	Integer latituide, logitiude;
 
@@ -30,33 +32,58 @@ public class Person implements Serializable {
 	AID parentAID;
 
 	public String recalculateIdea() {
-		return recalculateIdea(this.ideaId, 0);
+		return recalculateIdea(this.ideaId, 0.0);
 	}
 
-	public String recalculateIdea(String ideaId, Integer infuance) {
-		
-		Map<String, Integer> ideas = new HashMap<String, Integer>();
+	public String updateFriend(String id, String ideaID, Integer suraa) {
 
-		ideas.put(ideaId, infuance);
+		if (friends.containsKey(id)) {
+			FriendInfo info = friends.get(id);
+			info.setIdeaId(ideaID);
+			info.setIdeaSurence(suraa);
+
+			return recalculateIdea();
+
+		}
+		return null;
+
+	}
+
+	public String recalculateIdea(String ideaId, Double infuance) {
+
+		System.out.println("Recalculating!");
+
+		Map<String, Double> ideas = new HashMap<String, Double>();
+
+		ideas.put(ideaId, infuance + 0.0);
 
 		for (FriendInfo friendInfo : friends.values()) {
 			if (friendInfo != null) {
-				
-				Integer tmp = 0;
 
-				if(friendInfo.getIdeaId() != null & ideas.containsKey(friendInfo.getIdeaId())){
+				Double tmp = 0.0;
+
+				System.out.println("mam:" + friendInfo.getId() + " "
+						+ friendInfo.getIdeaSurence() + " "
+						+ friendInfo.getInfuence() + " "
+						+ friendInfo.getIdeaId());
+
+				if (friendInfo.getIdeaId() != null
+						& ideas.containsKey(friendInfo.getIdeaId())) {
 					tmp = ideas.get(friendInfo.getIdeaId());
 				}
-				
-				tmp += friendInfo.getIdeaSurence() / friendInfo.getInfuence();
+
+				tmp += friendInfo.getIdeaSurence() * 1.0
+						/ friendInfo.getInfuence();
 				ideas.put(friendInfo.getIdeaId(), tmp);
 			}
 		}
 
 		String newIdea = ideaId;
-		Integer newSurance = infuance;
+		Double newSurance = infuance;
 
 		for (String idea : ideas.keySet()) {
+
+			System.out.println("idea" + idea + " " + ideas.get(idea));
 
 			if (ideas.get(idea) > infuance) {
 				infuance = ideas.get(idea);
@@ -90,6 +117,8 @@ public class Person implements Serializable {
 
 		FriendInfo info = friends.get(friendID);
 		if (info != null) {
+			
+			System.out.println("!QQQQQQQQQQQQQQQQQQ");
 
 			info.setIdeaId(ideaID);
 			info.setIdeaSurence(surance);
@@ -141,11 +170,11 @@ public class Person implements Serializable {
 	}
 
 	public Integer getIdeaSurance() {
-		return ideaSurance;
+		return ideaSurance.intValue();
 	}
 
 	public void setIdeaSurance(Integer ideaSurance) {
-		this.ideaSurance = ideaSurance;
+		this.ideaSurance = ideaSurance.doubleValue();
 	}
 
 	public Integer getLatituide() {

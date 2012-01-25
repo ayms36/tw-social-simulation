@@ -11,9 +11,9 @@ public class FriendInfo implements Serializable{
 	
 	String ideaId;
 	String id;
-	Integer ideaSurence;
+	Integer ideaSurence = 1;
 	AID parentAID;
-	Integer infuence;
+	Integer infuence = 1;
 	String toId;
 	
 	private FriendInfo(){
