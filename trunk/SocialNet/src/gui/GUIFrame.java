@@ -85,7 +85,6 @@ public class GUIFrame extends JFrame {
 			for (int i = 0; i < people.size(); i++) {
 				double x = transformX(xInc, people.get(i).getLatitude()-getLatitudeMin());
 				double y = transformY(scale, people.get(i).getLongitude()-getLongitudeMin());
-				System.out.println("xInc=" + xInc + "\nscale="+scale+"\n");
 				g2.setPaint(ideas.get(people.get(i).getIdea()).getC());
 
 				for (PersonGUI p : people.get(i).getFriends()) {
@@ -106,7 +105,7 @@ public class GUIFrame extends JFrame {
 				g2.setPaint(ideas.get(people.get(i).getIdea()).getC());
 				g2.fill(new Ellipse2D.Double(x - 40, y - 16, 80, 32));
 				g2.setPaint(Color.BLACK);
-				g2.drawString(people.get(i).getName(), (int) x - 2, (int) y + 3);
+				g2.drawString(people.get(i).getName(), (int) x - 20, (int) y + 3);
 			}
 
 		}

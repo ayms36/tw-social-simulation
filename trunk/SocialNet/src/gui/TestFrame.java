@@ -28,10 +28,10 @@ public class TestFrame {
 		System.out.println("People " + agent.getPeople());
 		Thread.currentThread().sleep(3000);
 		agent.removeFriend("1", "2");
-		agent.addPeople("1", "iha", 100, 20);
-		agent.addPeople("2","los",70,150);
-		agent.addPeople("3", "idea", 10, 80);
-		agent.addPeople("4","lol",120,20);
+		agent.addPeople("Jan", "iha", 100, 20);
+		agent.addPeople("Pawel","los",70,150);
+		agent.addPeople("Romek", "idea", 10, 80);
+		agent.addPeople("Tomek","lol",120,20);
 		System.out.println("--------------------------------------------------------------------");
 		System.out.println("Ideas " + agent.getIdeas());
 		System.out.println("People " + agent.getPeople());
