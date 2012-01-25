@@ -7,5 +7,5 @@ public class StaticValues {
 	
 	public static int minSleepTime = 50;
 	
-	public static int startSurance = 100;
+	public static int startSurance = 1;
 }

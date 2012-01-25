@@ -17,7 +17,7 @@ public class LocalAgentInfo {
 	}
 
 	public int getRandomLat() {
-		return lat + random.nextInt(lat);
+		return lat + random.nextInt(latR);
 	}
 
 	public AID getAid() {

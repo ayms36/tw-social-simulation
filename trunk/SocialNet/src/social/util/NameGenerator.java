@@ -15,9 +15,5 @@ public class NameGenerator {
 			
 		
 	}
-	
-	public static String generateNewIdeaName(){
-		return "Komunizm jest zły " + (System.nanoTime() %1000000);
-	}
-	
+		
 }
