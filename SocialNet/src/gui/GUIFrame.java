@@ -1,6 +1,7 @@
 package gui;
 
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -91,6 +92,7 @@ public class GUIFrame extends JFrame {
 					Line2D line = new Line2D.Double(x, y, transformX(xInc,
 							p.getLatitude()-getLatitudeMin()), transformY(scale,
 							p.getLongitude()-getLongitudeMin()));
+					g2.setStroke(new BasicStroke(4));
 					g2.draw(line);
 					g2.fill(line);
 
