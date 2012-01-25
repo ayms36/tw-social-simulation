@@ -92,8 +92,11 @@ public class GUIFrame extends JFrame {
 							p.getLatitude()-getLatitudeMin()), transformY(scale,
 							p.getLongitude()-getLongitudeMin()));
 					g2.setStroke(new BasicStroke(4));
-					g2.draw(line);
-					g2.fill(line);
+				//	g2.draw(line);
+				//	g2.fill(line);
+					g2.drawLine((int)x, (int)y,(int) transformX(xInc,
+							p.getLatitude()-getLatitudeMin()),(int) transformY(scale,
+							p.getLongitude()-getLongitudeMin()));
 
 					// }
 				}
