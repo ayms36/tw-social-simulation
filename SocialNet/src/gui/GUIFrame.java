@@ -77,43 +77,39 @@ public class GUIFrame extends JFrame {
 			int w = getWidth();
 			int h = getHeight();
 			g2.clearRect(0, 0, w, h);
-			double xInc = ((double)(getSize().getWidth()*0.1) +(double) (w - 2 * PAD)) /(1.5* getLatitudeMax());
-			double scale = ((double)(getSize().getHeight()*0.1)+(double) (h - 2 * PAD)) / (1.5*getLongitudeMax());
+			double xInc = (double) (w - 2 * PAD) /(getLatitudeMax() -getLatitudeMin());
+			double scale = (double) (h - 2 * PAD) / (getLongitudeMax() - getLongitudeMin());
 
 			// Drawing people
 			for (int i = 0; i < people.size(); i++) {
-				double x = transformX(xInc, people.get(i).getLatitude());
-				double y = transformY(scale, people.get(i).getLongitude());
+				double x = transformX(xInc, people.get(i).getLatitude()-getLatitudeMin());
+				double y = transformY(scale, people.get(i).getLongitude()-getLongitudeMin());
+				System.out.println("xInc=" + xInc + "\nscale="+scale+"\n");
 				g2.setPaint(ideas.get(people.get(i).getIdea()).getC());
 
 				for (PersonGUI p : people.get(i).getFriends()) {
-					// if(indexInPeople(p.getName())>indexInPeople(people.get(i).getName())){
 					Line2D line = new Line2D.Double(x, y, transformX(xInc,
-							p.getLatitude()), transformY(scale,
-							p.getLongitude()));
+							p.getLatitude()-getLatitudeMin()), transformY(scale,
+							p.getLongitude()-getLongitudeMin()));
 					g2.draw(line);
+					g2.fill(line);
 
 					// }
 				}
 
 			}
 			for (int i = 0; i < people.size(); i++) {
-				double x = transformX(xInc, people.get(i).getLatitude());
-				double y = transformY(scale, people.get(i).getLongitude());
+				double x = transformX(xInc, people.get(i).getLatitude()-getLatitudeMin());
+				double y = transformY(scale, people.get(i).getLongitude()-getLongitudeMin());
 				g2.setPaint(ideas.get(people.get(i).getIdea()).getC());
-				g2.fill(new Ellipse2D.Double(x - 50, y - 16, 100, 32));
+				g2.fill(new Ellipse2D.Double(x - 40, y - 16, 80, 32));
 				g2.setPaint(Color.BLACK);
 				g2.drawString(people.get(i).getName(), (int) x - 2, (int) y + 3);
 			}
 
 		}
 
-		private int indexInPeople(String personGUI) {
-			for (int i = 0; i < people.size(); i++)
-				if (personGUI.equals(people.get(i).getName()))
-					return i;
-			return -1;
-		}
+
 
 		private double transformX(double xInc, double x) {
 			return PAD + xInc * x;
@@ -142,6 +138,24 @@ public class GUIFrame extends JFrame {
 			}
 
 			return max;
+		}
+		
+		private int getLatitudeMin() {
+			int min = Integer.MAX_VALUE;
+			for (int i = 0; i < people.size(); i++) {
+				if (people.get(i).getLatitude() < min)
+					min = people.get(i).getLatitude();
+			}
+			return min;
+		}
+		private int getLongitudeMin() {
+			int min = Integer.MAX_VALUE;
+			for (int i = 0; i < people.size(); i++) {
+				if (people.get(i).getLongitude() < min)
+					min = people.get(i).getLongitude();
+			}
+
+			return min;
 		}
 	}
 
