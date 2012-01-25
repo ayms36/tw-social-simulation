@@ -8,15 +8,32 @@ public class TestFrame {
 
 	private static GUIFrame frame;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				frame = new GUIFrame();
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setVisible(true);
-			}
-	});
+	public static void main(String[] args) throws InterruptedException {
+		TestGUI agent = new TestGUI();
+		agent.init();
+		agent.addIdea("idea");
+		agent.addIdea("lol");
+		agent.addPeople("1", "idea", 30, 40);
+		agent.addPeople("2","lol",20,20);
+		agent.addPeople("3", "idea", 80, 40);
+		agent.addPeople("4","lol",120,20);
+		agent.addFriend("1", "2");
+		agent.addFriend("1", "3");
+		agent.addFriend("1", "4");
+		agent.addFriend("3", "4");
+
+
+		
+		System.out.println("Ideas " + agent.getIdeas());
+		System.out.println("People " + agent.getPeople());
+		Thread.currentThread().sleep(3000);
+		agent.removeFriend("1", "2");
+		agent.addPeople("1", "iha", 100, 20);
+		agent.addPeople("2","los",70,150);
+		agent.addPeople("3", "idea", 10, 80);
+		agent.addPeople("4","lol",120,20);
+		System.out.println("--------------------------------------------------------------------");
+		System.out.println("Ideas " + agent.getIdeas());
+		System.out.println("People " + agent.getPeople());
 	}
 }

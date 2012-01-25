@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 
@@ -33,7 +34,7 @@ public class TestGUI {
 	public void addIdea(String ideaID){
 		frame.addIdea(ideaID);
 	}
-	public List<IdeaGUI> getIdeas(){
+	public Map<String,IdeaGUI> getIdeas(){
 		return frame.getIdeas();
 	}
 	public List<PersonGUI> getPeople(){

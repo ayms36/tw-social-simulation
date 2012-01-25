@@ -1,31 +1,21 @@
 package gui;
 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-
-import com.sun.corba.se.impl.orbutil.RepIdDelegator;
-
-import social.util.NameGenerator;
 
 public class GUIFrame extends JFrame {
 
@@ -46,15 +36,15 @@ public class GUIFrame extends JFrame {
 		this.people = people;
 	}
 
-	public List<IdeaGUI> getIdeas() {
+	public Map<String,IdeaGUI> getIdeas() {
 		return ideas;
 	}
 
-	public void setIdeas(List<IdeaGUI> ideas) {
+	public void setIdeas(Map<String,IdeaGUI> ideas) {
 		this.ideas = ideas;
 	}
 
-	private List<IdeaGUI> ideas = new ArrayList<IdeaGUI>();
+	private Map<String,IdeaGUI> ideas = new HashMap<String, IdeaGUI>();
 
 	public GUIFrame() {
 		this.setTitle(title);
@@ -87,15 +77,15 @@ public class GUIFrame extends JFrame {
 			int w = getWidth();
 			int h = getHeight();
 			g2.clearRect(0, 0, w, h);
-			double xInc = (double) (w - 2 * PAD) / getLatitudeMax();
-			double scale = (double) (h - 2 * PAD) / getLongitudeMax();
+			double xInc = ((double)(getSize().getWidth()*0.1) +(double) (w - 2 * PAD)) /(1.5* getLatitudeMax());
+			double scale = ((double)(getSize().getHeight()*0.1)+(double) (h - 2 * PAD)) / (1.5*getLongitudeMax());
 
 			// Drawing people
 			for (int i = 0; i < people.size(); i++) {
 				double x = transformX(xInc, people.get(i).getLatitude());
 				double y = transformY(scale, people.get(i).getLongitude());
-				g2.setPaint(people.get(i).getIdea().getC());
-				g2.fill(new Ellipse2D.Double(x - 50, y - 16, 100, 32));
+				g2.setPaint(ideas.get(people.get(i).getIdea()).getC());
+
 				for (PersonGUI p : people.get(i).getFriends()) {
 					// if(indexInPeople(p.getName())>indexInPeople(people.get(i).getName())){
 					Line2D line = new Line2D.Double(x, y, transformX(xInc,
@@ -105,6 +95,13 @@ public class GUIFrame extends JFrame {
 
 					// }
 				}
+
+			}
+			for (int i = 0; i < people.size(); i++) {
+				double x = transformX(xInc, people.get(i).getLatitude());
+				double y = transformY(scale, people.get(i).getLongitude());
+				g2.setPaint(ideas.get(people.get(i).getIdea()).getC());
+				g2.fill(new Ellipse2D.Double(x - 50, y - 16, 100, 32));
 				g2.setPaint(Color.BLACK);
 				g2.drawString(people.get(i).getName(), (int) x - 2, (int) y + 3);
 			}
@@ -182,7 +179,8 @@ public class GUIFrame extends JFrame {
 	public void changePeopleIdea(String peopleId, String ideaId) {
 		for (PersonGUI p : people) {
 			if (p.getName().equals(peopleId)) {
-				p.setIdea(new IdeaGUI(ideaId));
+				p.setIdea(ideaId);
+				addIfNotContains(ideaId);
 			}
 		}
 		repaint();
@@ -190,12 +188,19 @@ public class GUIFrame extends JFrame {
 
 	public void addPeople(String id, String ideaID, int latitude, int longitude) {
 		people.add(new PersonGUI(id, ideaID, latitude, longitude));
+		addIfNotContains(ideaID);
 		repaint();
 	}
 
 	public void addIdea(String ideaID) {
-		ideas.add(new IdeaGUI(ideaID));
+		addIfNotContains(ideaID);
 		repaint();
+	}
+	
+	private void addIfNotContains(String ideaId){
+		if( !ideas.containsKey(ideaId)){
+			ideas.put(ideaId, new IdeaGUI());
+		}
 	}
 
 }

@@ -5,14 +5,14 @@ import java.util.List;
 
 public class PersonGUI {
 	private String name;
-	private IdeaGUI idea;
+	private String idea;
 	private int latitude;
 	private int longitude;
 	private List<PersonGUI> friends;
 
 	public PersonGUI(String name, String idea, int latitude, int longitude) {
 		this.name = name;
-		this.idea = new IdeaGUI(idea);
+		this.idea = idea;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		friends = new ArrayList<PersonGUI>();
@@ -70,11 +70,11 @@ public class PersonGUI {
 		this.name = name;
 	}
 
-	public IdeaGUI getIdea() {
+	public String getIdea() {
 		return idea;
 	}
 
-	public void setIdea(IdeaGUI idea) {
+	public void setIdea(String idea) {
 		this.idea = idea;
 	}
 
