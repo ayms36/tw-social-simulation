@@ -1,0 +1,1 @@
+symulacja sieci społecznej oparta o JADE
